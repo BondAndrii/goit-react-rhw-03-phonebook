@@ -1,7 +1,5 @@
 import React from "react";
 
-// import { nanoid } from "nanoid";
-
 import { Component } from "react";
 
 import { ContactForm } from "./ContactForm/ContactForm";
@@ -41,17 +39,10 @@ export class App extends Component {
     const { contacts } = this.state;
     if (contacts.find(contact => contact.name === abonent.name)) {
       alert(`${abonent.name} is already in contacts`);
-    } else {
-      // this.state.contacts.map(contact => contact.name.includes(name) ? alert("Співпадіння") : alert("Норм"))
-      // name === this.state.contacts.name ? alert("Співпадіння") : alert("Норм")
-      // const contact = {
-      //   id: nanoid(),
-      //   name,
-      //   number,
-      // }
+    } else {      
       this.setState(prevState => ({ contacts: [...prevState.contacts, abonent] }))
       
-      // console.log(this.state);    
+       
     }
   }
   handleFilter = (event) => {    
