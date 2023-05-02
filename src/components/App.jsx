@@ -45,12 +45,13 @@ export class App extends Component {
   }
   componentDidUpdate() {
     const { contacts } = this.state;
+  
     localStorage.setItem("newContacts", JSON.stringify(contacts));
     try {
       this.setState({ contacts: JSON.parse(localStorage.getItem("newContacts")) })
     } catch (error) {
       console.log(error.name);
-      console.log(error.message)
+      // console.log(error.message)
     }
   }
   addNewContact = (abonent) => {
