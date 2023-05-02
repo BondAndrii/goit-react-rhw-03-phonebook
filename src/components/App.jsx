@@ -10,49 +10,31 @@ import { ContactList } from "./ContactList/ContactList";
 
 import { Filter } from "components/Filter/Filter";
 
+import defaultUsers from "../assets/defaultUsers"
+
 export class App extends Component {
   
   state = {
-    contacts: [],
-      //[
-    // {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-    // {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-    // {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-    // {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-  //],
-    filter:'',
-    
+    contacts: [],    
+    filter:'',    
   }
  
   
   componentDidMount() {
-    const contacts = [
-    {id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
-    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
-    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
-    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},
-  ]
-    const newContacts = JSON.stringify(contacts);
-    localStorage.setItem("newContacts", newContacts);
 
-    try {
-      this.setState({ contacts: JSON.parse(localStorage.getItem("newContacts")) })
-    } catch (error) {
-      console.log(error.name);
-      console.log(error.message)
-    }
+    const contacts = JSON.parse(localStorage.getItem("contacts")) || defaultUsers;
+    this.setState({ contacts });  
    
   }
-  componentDidUpdate() {
+  componentDidUpdate(_, prevState) {
     const { contacts } = this.state;
-  
-    localStorage.setItem("newContacts", JSON.stringify(contacts));
-    try {
-      this.setState({ contacts: JSON.parse(localStorage.getItem("newContacts")) })
-    } catch (error) {
-      console.log(error.name);
-      // console.log(error.message)
+    if (
+      prevState.contacts.length !== 0 &&
+      prevState.contacts.length !== contacts.length) {
+      localStorage.setItem("contacts", JSON.stringify(contacts));
+      console.log("in componentDidUpdate");
     }
+     
   }
   addNewContact = (abonent) => {
     console.log(abonent);
@@ -68,7 +50,7 @@ export class App extends Component {
       //   number,
       // }
       this.setState(prevState => ({ contacts: [...prevState.contacts, abonent] }))
-      localStorage.setItem("newContacts", JSON.stringify(contacts));
+      
       // console.log(this.state);    
     }
   }
@@ -87,13 +69,14 @@ export class App extends Component {
   onDelete = (id) => {
     this.setState(prevState => ({
       contacts: prevState.contacts.filter(contact => contact.id !== id),
-    }));    
+    }));
+    
   } 
   render() {
     const { filter} = this.state;    
     const forPrint = this.makeFilterList();
     
-    console.log("in render", this.state.contacts)
+    
     return (
       <div>
         <h1>Phonebook</h1>
